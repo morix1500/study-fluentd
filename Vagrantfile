@@ -19,6 +19,12 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/xenial64"
 
+  #config.vm.provider "virtualbox" do |vm|
+  #  vm.memory = 1024
+  #  vm.cpus = 2
+  #  vm.customize ["modifyvm", :id, "--ioapic", "on"]
+  #end
+
   config.vm.define :web do | web |
     web.vm.hostname = "web"
     web.vm.network :private_network, ip: "192.168.33.10", virtualbox__intnet: "intnet"
@@ -27,5 +33,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define :fluentd do | fluentd |
     fluentd.vm.hostname = "fluentd"
     fluentd.vm.network :private_network, ip: "192.168.33.20", virtualbox__intnet: "intnet"
+    fluentd.vm.network :forwarded_port, guest: 5601, host:50000
   end
 end
