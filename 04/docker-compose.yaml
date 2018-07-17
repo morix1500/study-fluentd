@@ -1,7 +1,7 @@
-version: '2'
+version: '3'
 services:
   elasticsearch:
-    build: es
+    image: elasticsearch:5.6.10
     volumes:
         - es-data:/usr/share/elasticsearch/data
         - ./es/config:/usr/share/elasticsearch/config
@@ -9,12 +9,14 @@ services:
         - 9200:9200
     expose:
         - 9300
+    environment:
+      ES_JAVA_OPTS: "-Xms400m -Xmx400m"
     ulimits:
         nofile:
             soft: 65536
             hard: 65536
   kibana:
-    build: kibana
+    image: kibana:5.6.10
     links:
         - elasticsearch:elasticsearch
     ports:
